@@ -12,3 +12,8 @@ NOTE: If the camera calibration is bad, the pose estimates will be bad.
 ## Pose Estimation
 This is done via the detect_marker.py script. It reads the calibration matrices stored in realSenseCal.npy and uses those as inputs to the cv2.aruco.detectMarkers() function to determine the location of all markers in the frame.
 
+## How to run
+Step 1: Run calibrate_cam.py with the correct calibration images for your camera. This only needs to be done once.
+
+Step 2: Keep the marker within camera view and run detect_marker.py. This will store a steady stream of [x,y,z] coordinates in a csv file.
+

@@ -10,7 +10,7 @@ while True:
 
     cv2.imshow("Image Feed", frame)
 
-    # hit q to quit
+    # hit q to quit, s to take screenshot and store it
     key = cv2.waitKey(1) & 0xFF
     if key == ord('s'):
         count += 1

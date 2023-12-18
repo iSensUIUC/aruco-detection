@@ -14,6 +14,9 @@ y = data_stat[:,1]
 z = data_stat[:,2]
 z2 = data_stat[:,2]
 
+
+# plotting z-axis measurements for stationary and moving test
+
 # plt.subplot(121)
 # plt.plot(z2, color="blue", label="Stationary camera")
 # # plt.plot(z2, color="red")
@@ -22,7 +25,6 @@ z2 = data_stat[:,2]
 # plt.xlabel("Points")
 # plt.legend()
 # plt.title("Z-displacement = 150 cm")
-
 # plt.subplot(122)
 # plt.plot(z, color="red", label="Moving Camera")
 # # plt.plot(z2, color="red")
@@ -33,11 +35,10 @@ z2 = data_stat[:,2]
 # plt.title("Z-displacement = 150 cm")
 
 
+# plotting 3D plot of recording measurements
 
 fig = plt.figure(figsize = (10, 7))
 ax = plt.axes(projection ="3d")
- 
-# Creating plot
 ax.scatter3D(x, y, z, color = "green")
 ax.scatter3D(10, 10, 600, color = "red")
 ax.set_zlim(0,750)

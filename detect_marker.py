@@ -1,4 +1,5 @@
 """
+Reference taken from:
 https://github.com/tizianofiorenzani/how_do_drones_work/blob/master/opencv/aruco_pose_estimation.py
 https://www.youtube.com/watch?v=CmDO-w56qso 
 """
@@ -8,7 +9,7 @@ import cv2
 import cv2.aruco as aruco
 import csv
 
-
+# edit file to store data in
 filename = "testfile.csv"
 fields = ["x (cm)", "y (cm)", "z (cm)"]
 
@@ -22,7 +23,6 @@ with open("realSenseCal.npy", "rb") as f:
     camera_distortion = np.load(f)
 
 # define aruco dictionary
-# aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
 aruco_dict  = aruco.getPredefinedDictionary(aruco.DICT_ARUCO_ORIGINAL)
 parameters  = aruco.DetectorParameters_create()
 parameters.adaptiveThreshConstant = 10
@@ -35,7 +35,8 @@ with open(filename, 'w') as csvfile:
 
     while True:
         ret, frame = cap.read()
-        # cv2.imshow("frame", frame)
+
+        # convert feed to grayscale
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, rejected = aruco.detectMarkers(image=gray_frame, dictionary=aruco_dict, parameters=parameters, 
                                         cameraMatrix=camera_matrix, distCoeff=camera_distortion)
@@ -43,19 +44,22 @@ with open(filename, 'w') as csvfile:
         if ids is not None:
             # print(ids[0])
             aruco.drawDetectedMarkers(frame, corners)
-            ret = aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, camera_distortion)
 
+            # opencv function to estimate pose
+            ret = aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, camera_distortion)
             rvec, tvec = ret[0][0,0,:], ret[1][0,0,:]
 
-            aruco.drawDetectedMarkers(frame, corners)
-            aruco.drawAxis(frame, camera_matrix, camera_distortion, rvec, tvec, 10)
-            
+            # add x,y,z positions to csv file
             addRow = [tvec[0], tvec[1], tvec[2]]
             csvwriter.writerow(addRow)
 
+            # display pose information on frame
+            aruco.drawDetectedMarkers(frame, corners)
+            aruco.drawAxis(frame, camera_matrix, camera_distortion, rvec, tvec, 10)
             str_position = "MARKER Position x=%4.0f  y=%4.0f  z=%4.0f"%(tvec[0], tvec[1], tvec[2])
             cv2.putText(frame, str_position, (0, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
+        # hit q to end program
         cv2.imshow("frame", frame)
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):

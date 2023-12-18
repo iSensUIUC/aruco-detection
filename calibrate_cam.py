@@ -16,6 +16,7 @@ list_cb_3D_points = []
 list_cb_2D_img_points = []
 list_images = glob.glob("*.jpg")
 
+# parse through all calibration images
 for frame_name in list_images:
     img = cv2.imread(frame_name)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -32,12 +33,14 @@ for frame_name in list_images:
 
 cv2.destroyAllWindows()
 
+# opencv function to calibrate camera
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(list_cb_3D_points, list_cb_2D_img_points, gray.shape[::-1], None, None)
 
 print("Calibration Matrix: ")
 print(mtx)
 print("Distortion: ", dist)
 
+# store calibration matrices for later reference
 with open('realSenseCal.npy', "wb") as f:
     np.save(f, mtx)
     np.save(f, dist)

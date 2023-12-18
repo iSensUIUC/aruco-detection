@@ -49,10 +49,13 @@ means = []
 for i in range(len(z_dists)):
     means.append(np.mean(z_dists[i]) - (i+1)*100)
 
-plt.plot(means)
+plt.plot(means) # plotting mean errors
 plt.ylabel("Estimation error (cm)")
 plt.xlabel("Distance to marker (m)")
 plt.title("Mean error as distance increases")
+
+
+# plotting all z-axis estimations
 
 # plt.plot(z_dists[0], color="blue", label="1m distance")
 # plt.plot(z_dists[1], color="red", label="2m distance")
